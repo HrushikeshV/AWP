@@ -6,9 +6,11 @@
 package awp_proj;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -20,6 +22,7 @@ public class project extends javax.swing.JFrame {
      * Creates new form project
      */
     String path ;
+    int pos = 0;
     
     public project() {
         initComponents();
@@ -35,11 +38,29 @@ public class project extends javax.swing.JFrame {
     
     public void showImages(int index)
     {
+        
         String[] Images = getImages() ;
         String ImageName = Images[index];
-        ImageIcon icon = new ImageIcon(getClass().getResource(path+ImageName));
+        //System.out.println(path);
+        ImageIcon icon = new ImageIcon(getClass().getResource(path+"/"+ImageName));
         Image image = icon.getImage().getScaledInstance(j1.getWidth(), j1.getHeight(),Image.SCALE_SMOOTH);
         j1.setIcon(new ImageIcon(image)) ;
+    }
+    
+    public ImageIcon ResizeImage(String Imagepath)
+    {
+//        ImageIcon myimage = new ImageIcon(Imagepath) ;
+//        Image img = myimage.getImage();
+//        Image newimg = img.getScaledInstance(j1.getWidth(),j1.getHeight(),Image.SCALE_SMOOTH);
+//        ImageIcon image = new ImageIcon(newimg);
+//        return image;
+          Image img1 = null;
+          Toolkit tk = this.getToolkit();
+          img1 = tk.getImage(Imagepath);
+          Image img2 = img1.getScaledInstance(j1.getWidth(),j1.getHeight(),Image.SCALE_SMOOTH);
+          ImageIcon i1 = new ImageIcon(img2);
+          return i1;
+          
     }
      private void setParam()
      {
@@ -47,6 +68,9 @@ public class project extends javax.swing.JFrame {
          Next.setVisible(false) ;
          Rename.setVisible(false) ;
          Delete.setVisible(false) ;
+          rn.setVisible(false);
+        j3.setVisible(false);
+        t2.setVisible(false);
      }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,11 +80,14 @@ public class project extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jMenuItem1 = new javax.swing.JMenuItem();
         c1 = new javax.swing.JComboBox<>();
         j1 = new javax.swing.JLabel();
+        j2 = new javax.swing.JLabel();
+        t2 = new javax.swing.JTextField();
+        j3 = new javax.swing.JLabel();
+        rn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         File = new javax.swing.JMenu();
         New = new javax.swing.JMenuItem();
@@ -72,6 +99,7 @@ public class project extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        c1.setFont(new java.awt.Font("Tahoma", 2, 22)); // NOI18N
         c1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "New", "Next", "Rename", "Delete" }));
         c1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,10 +107,25 @@ public class project extends javax.swing.JFrame {
             }
         });
 
-        j1.setText("jLabel1");
+        j2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        j2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, j1, org.jdesktop.beansbinding.ELProperty.create("${icon}"), j1, org.jdesktop.beansbinding.BeanProperty.create("border"));
-        bindingGroup.addBinding(binding);
+        t2.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        t2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t2ActionPerformed(evt);
+            }
+        });
+
+        j3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        j3.setText("Enter New Name :");
+
+        rn.setText("Rename");
+        rn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rnActionPerformed(evt);
+            }
+        });
 
         File.setText("File");
 
@@ -95,6 +138,11 @@ public class project extends javax.swing.JFrame {
         File.add(New);
 
         Next.setText("next");
+        Next.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NextActionPerformed(evt);
+            }
+        });
         File.add(Next);
 
         Rename.setText("Rename");
@@ -106,6 +154,11 @@ public class project extends javax.swing.JFrame {
         File.add(Rename);
 
         Delete.setText("delete");
+        Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteActionPerformed(evt);
+            }
+        });
         File.add(Delete);
 
         jMenuBar1.add(File);
@@ -117,30 +170,59 @@ public class project extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(384, 384, 384)
-                .addComponent(c1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(99, Short.MAX_VALUE)
-                .addComponent(j1, javax.swing.GroupLayout.PREFERRED_SIZE, 844, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(120, 120, 120))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(174, Short.MAX_VALUE)
+                        .addComponent(j1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(170, 170, 170)
+                                .addComponent(j3))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(t2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(rn)
+                                        .addGap(80, 80, 80))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(384, 384, 384)
+                                .addComponent(c1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(157, 157, 157)
+                                .addComponent(j2, javax.swing.GroupLayout.PREFERRED_SIZE, 725, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(j1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(j1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(j3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(t2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(rn)))
+                .addGap(115, 115, 115)
+                .addComponent(j2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63)
                 .addComponent(c1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(106, Short.MAX_VALUE))
         );
-
-        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void RenameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RenameActionPerformed
         // TODO add your handling code here:
+        rn.setVisible(true);
+        j3.setVisible(true);
+        t2.setVisible(true);
     }//GEN-LAST:event_RenameActionPerformed
 
     private void c1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1ActionPerformed
@@ -179,14 +261,52 @@ public class project extends javax.swing.JFrame {
     private void NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewActionPerformed
         // TODO add your handling code here:
         JFileChooser chooser = new JFileChooser();
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images","jpg","gif"," png");
+        chooser.addChoosableFileFilter(filter);
+        int result = chooser.showSaveDialog(null);
+        if(result==JFileChooser.APPROVE_OPTION)
+        {
+            File selectedfile = chooser.getSelectedFile();
+            String  path = selectedfile.getAbsolutePath();
+            //System.out.println(path);
+            j1.setIcon(ResizeImage(path));
+            j2.setText(path);
+        }
+        /*chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
                path = chooser.getSelectedFile().getAbsolutePath();
-        }
-        
-        
+        }*/
+        //System.out.println(path);
+        //showImages(pos) ;
     }//GEN-LAST:event_NewActionPerformed
+
+    private void NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextActionPerformed
+        // TODO add your handling code here:
+        
+        pos = pos + 1 ;
+        if(pos>=getImages().length)
+        {
+            pos = 0 ;
+        }
+        showImages(pos) ;
+    }//GEN-LAST:event_NextActionPerformed
+
+    private void t2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t2ActionPerformed
+
+    private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
+        // TODO add your handling code here:
+        j1.setIcon(null);
+        j2.setText("");
+    }//GEN-LAST:event_DeleteActionPerformed
+
+    private void rnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rnActionPerformed
+        // TODO add your handling code here:
+        j2.setText(t2.getText());
+    }//GEN-LAST:event_rnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -231,8 +351,11 @@ public class project extends javax.swing.JFrame {
     private javax.swing.JMenuItem Rename;
     private javax.swing.JComboBox<String> c1;
     private javax.swing.JLabel j1;
+    private javax.swing.JLabel j2;
+    private javax.swing.JLabel j3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
+    private javax.swing.JButton rn;
+    private javax.swing.JTextField t2;
     // End of variables declaration//GEN-END:variables
 }
